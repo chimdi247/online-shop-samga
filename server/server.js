@@ -7,6 +7,8 @@ const authRouter = require("./routes/auth/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
 const adminOrderRouter = require("./routes/admin/order-routes");
 
+const job = require("./cron/cron")
+
 const shopProductsRouter = require("./routes/shop/products-routes");
 const shopCartRouter = require("./routes/shop/cart-routes");
 const shopAddressRouter = require("./routes/shop/address-routes");
@@ -43,6 +45,8 @@ app.use(
     credentials: true,
   })
 );
+
+job.start()
 
 app.use(cookieParser());
 app.use(express.json());

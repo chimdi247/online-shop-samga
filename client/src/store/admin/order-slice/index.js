@@ -1,84 +1,84 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 const initialState = {
   orderList: [],
   orderDetails: null,
-};
+}
 
 export const getAllOrdersForAdmin = createAsyncThunk(
-  "/order/getAllOrdersForAdmin",
+  '/order/getAllOrdersForAdmin',
   async () => {
     const response = await axios.get(
-      `http://localhost:5000/api/admin/orders/get`
-    );
+      `https://online-shop-raph.onrender.com/api/admin/orders/get`,
+    )
 
-    return response.data;
-  }
-);
+    return response.data
+  },
+)
 
 export const getOrderDetailsForAdmin = createAsyncThunk(
-  "/order/getOrderDetailsForAdmin",
+  '/order/getOrderDetailsForAdmin',
   async (id) => {
     const response = await axios.get(
-      `http://localhost:5000/api/admin/orders/details/${id}`
-    );
+      `https://online-shop-raph.onrender.com/api/admin/orders/details/${id}`,
+    )
 
-    return response.data;
-  }
-);
+    return response.data
+  },
+)
 
 export const updateOrderStatus = createAsyncThunk(
-  "/order/updateOrderStatus",
+  '/order/updateOrderStatus',
   async ({ id, orderStatus }) => {
     const response = await axios.put(
-      `http://localhost:5000/api/admin/orders/update/${id}`,
+      `https://online-shop-raph.onrender.com/api/admin/orders/update/${id}`,
       {
         orderStatus,
-      }
-    );
+      },
+    )
 
-    return response.data;
-  }
-);
+    return response.data
+  },
+)
 
 const adminOrderSlice = createSlice({
-  name: "adminOrderSlice",
+  name: 'adminOrderSlice',
   initialState,
   reducers: {
     resetOrderDetails: (state) => {
-      console.log("resetOrderDetails");
+      console.log('resetOrderDetails')
 
-      state.orderDetails = null;
+      state.orderDetails = null
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getAllOrdersForAdmin.pending, (state) => {
-        state.isLoading = true;
+        state.isLoading = true
       })
       .addCase(getAllOrdersForAdmin.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.orderList = action.payload.data;
+        state.isLoading = false
+        state.orderList = action.payload.data
       })
       .addCase(getAllOrdersForAdmin.rejected, (state) => {
-        state.isLoading = false;
-        state.orderList = [];
+        state.isLoading = false
+        state.orderList = []
       })
       .addCase(getOrderDetailsForAdmin.pending, (state) => {
-        state.isLoading = true;
+        state.isLoading = true
       })
       .addCase(getOrderDetailsForAdmin.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.orderDetails = action.payload.data;
+        state.isLoading = false
+        state.orderDetails = action.payload.data
       })
       .addCase(getOrderDetailsForAdmin.rejected, (state) => {
-        state.isLoading = false;
-        state.orderDetails = null;
-      });
+        state.isLoading = false
+        state.orderDetails = null
+      })
   },
-});
+})
 
-export const { resetOrderDetails } = adminOrderSlice.actions;
+export const { resetOrderDetails } = adminOrderSlice.actions
 
-export default adminOrderSlice.reducer;
+export default adminOrderSlice.reducer
